@@ -1,0 +1,18 @@
+en:
+  views:
+    pagination:
+      previous: "&laquo; Prev"
+      next: "Next &raquo;"
+      truncate: "..."
+      first: First
+      Last: Last
+
+ja:
+  views:
+    pagination:
+      previous: "&laquo; 前へ"
+      next: "次へ &raquo;"
+      truncate: "..."
+      first: "最初"
+      last: "最後"
+

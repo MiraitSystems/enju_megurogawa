@@ -1,0 +1,77 @@
+<script>
+$(function(){
+  $('#tabs').bind("tabsactivate", function(event, ui) {
+    if (ui.newPanel.selector == "#tabs-1" ) {
+      $('#tabs-1').find('input').removeAttr("disabled");
+      $('#tabs-2').find('input').attr("disabled","disabled");
+    } else {
+      $('#tabs-2').find('input').removeAttr("disabled");
+      $('#tabs-1').find('input').attr("disabled","disabled");
+    }
+  });
+
+  $('#tabs').tabs();
+  if ("<%= params[:solr_query] %>" != '') {
+    $('#tabs').tabs("option", "active", 1);
+    $('#tabs-2').find('input').removeAttr("disabled");
+    $('#tabs-1').find('input').attr("disabled","disabled");
+  } else {
+    $('#tabs-1').find('input').removeAttr("disabled");
+    $('#tabs-2').find('input').attr("disabled","disabled");
+  }
+
+  if ("<%= SystemConfiguration.get('nacsis.can_use') %>" || $('#index_local').is(':checked')) {
+    $('#tabs-1').find('.local-only').find('input').removeAttr("disabled");
+    $('#tabs-1').find('.local-only').show();
+    $('#tabs-1').find('.nacsis-only').find('input').attr("disabled","disabled");
+    $('#tabs-1').find('.nacsis-only').hide();
+  } else {
+    $('#tabs-1').find('.local-only').find('input').attr("disabled","disabled");
+    $('#tabs-1').find('.local-only').hide();
+    $('#tabs-1').find('.nacsis-only').find('input').removeAttr("disabled");
+    $('#tabs-1').find('.nacsis-only').show();
+  }
+
+  $('#index_local').change(function(){
+    $('#tabs-1').find('.local-only').find('input').removeAttr("disabled");
+    $('#tabs-1').find('.local-only').show();
+    $('#tabs-1').find('.nacsis-only').find('input').attr("disabled","disabled");
+    $('#tabs-1').find('.nacsis-only').hide();
+  });
+  $('#index_nacsis').change(function(){
+    $('#tabs-1').find('.local-only').find('input').attr("disabled","disabled");
+    $('#tabs-1').find('.local-only').hide();
+    $('#tabs-1').find('.nacsis-only').find('input').removeAttr("disabled");
+    $('#tabs-1').find('.nacsis-only').show();
+  });
+});
+</script>
+
+<div id="content_list" style="width: 660px; float: left;">
+  <%= form_tag({:controller => 'manifestations'}, {:method => 'get'}) do %>
+    <div id="tabs">
+      <ul>
+        <li><a href="#tabs-1"><%= t('advanced_search.advanced') -%></a></li>
+        <li><a href="#tabs-2"><%= t('advanced_search.solr_search') -%></a></li>
+      </ul>
+      <div id="tabs-1">
+        <%= render 'page/search_tab_detail', 
+          manifestation_types: @manifestation_types,
+          selected_manifestation_types: nil %>
+      </div>
+      <div id="tabs-2">
+        <%= render 'page/search_tab_solr' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+<%= javascript_tag("$('#query').focus()") -%>
+
+<div id="submenu" class="ui-corner-all">
+  <% unless SystemConfiguration.get("manifestation.isbn_unique") %>
+    <%= raw t('advanced_search.description') %>
+  <% else %>
+    <%= raw t('advanced_search.description_unique_isbn') %>
+  <% end %>
+</div>
+

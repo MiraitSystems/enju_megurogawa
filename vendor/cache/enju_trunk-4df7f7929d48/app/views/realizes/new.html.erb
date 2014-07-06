@@ -1,0 +1,19 @@
+<div id="content_detail" class="ui-corner-all">
+<h1 class="title"><%= t('page.new', :model => t('activerecord.models.realize')) -%></h1>
+<div id="content_list">
+
+<%= render 'form' %>
+
+</div>
+</div>
+
+<div id="submenu" class="ui-corner-all">
+  <ul>
+    <%- if @realize.agent -%>
+      <li><%= link_to t('page.listing', :model => t('activerecord.models.expression')), contributor_manifestations_path(@realize.agent) -%></li>
+    <%- end -%>
+    <%- if @realize.expression -%>
+      <li><%= link_to t('page.listing', :model => t('activerecord.models.agent')), expression_agents_path(@realize.expression) -%></li>
+    <%- end -%>
+  </ul>
+</div>

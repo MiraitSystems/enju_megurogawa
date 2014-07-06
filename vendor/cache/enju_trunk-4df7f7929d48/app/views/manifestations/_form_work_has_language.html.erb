@@ -1,0 +1,116 @@
+<script>
+  var ItemFieldLanguageSelect2 = {
+    currentNumber : <%= raw (@work_has_languages.size).to_json %>,
+    slect2Options : {
+      multiple: false,
+      minimumInputLength: 1,
+      width: "250px",
+      placeholder: <%= raw t("activerecord.models.language").to_json %>,
+      formatSearching: function() {
+        return <%= raw t("agent.search_searching").to_json %>;
+      },
+      formatInputTooShort: function(term, minLength){
+        return <%= raw t("agent.search_placeholder").to_json %>;
+      },
+      ajax: {
+        url: "/languages/search_name.json",
+        dataType: 'json',
+        data: function (term, page) {
+            return {search_phrase: term
+            };
+        },
+        results: function (data, page) {
+            return {results: data};
+        },
+      },
+      initSelection: function(element, callback) {
+        var id = $(element).val();
+        if (id != "" && id == parseInt(id)) {
+          $.ajax("/languages/search_name.json?language_id=" + id, {
+              dataType: "json"
+          }); // .done(function(data) { callback(data); });
+        }
+        else{
+          callback({ id: id, text: id });
+        }
+      },
+    },
+    actionTemplate : ''
+      + '<td><%= button_to_function t('page.add_line'), "ItemFieldLanguageSelect2.add()" -%></td>'
+      + '<td><%= button_to_function t('page.del_line'), "ItemFieldLanguageSelect2.remove(__count__)" -%>',
+    add : function () {
+      var newField = $("<tr/>").attr("id", "LANG" + this.currentNumber);
+      
+//      var cloneLanguageId = this.cloneField('work_has_languages_0_language_id');
+//      var cloneLanguageTypeId = this.cloneField('work_has_languages_0_language_type_id');
+      var cloneLanguageId = this.cloneField('manifestation_work_has_languages_attributes_0_language_id');
+      var cloneLanguageTypeId = this.cloneField('manifestation_work_has_languages_attributes_0_language_type_id');
+      var cloneDummy = this.cloneField('manifestation_work_has_languages_attributes_0_nested');
+
+      var td1 = $("<td/>").append(cloneLanguageId);
+      var td2 = $("<td/>").append(cloneLanguageTypeId);
+      var actionButton = this.actionTemplate.replace(/__count__/mg, this.currentNumber);
+
+      newField.append(td1).append(td2).append(cloneDummy).append(actionButton);
+      
+//      cloneLanguageId.select2(this.slect2Options);
+      
+      $("#languages > table > tbody").append(newField);
+
+      this.currentNumber += 1;
+    },
+    cloneField : function (fieldId) {
+      return $('#' + fieldId).clone().attr({
+          'id' : $('#' + fieldId).attr('id').replace(/_\d+_/, '_' + this.currentNumber + '_'),
+          'name' : $('#' + fieldId).attr('name').replace(/\[\d+\]/, '[' + this.currentNumber + ']'),
+      }).val('');
+    },
+    remove : function (trNum) {
+//      removeItemField('LANG', trNum)
+      var field = $("#LANG" + trNum);
+      if(field != null){
+        field.append('<input name=manifestation[work_has_languages_attributes][' + trNum + '][_destroy] style="display:none" value="1" />');
+        field.hide();
+      }       
+    }
+  }
+
+  $(document).ready(function() {
+    $('.language').select2(ItemFieldLanguageSelect2.slect2Options);
+//    $('.language_type').select2(ItemFieldLanguageSelect2.slect2Options);
+  });
+
+  $(document).on("select2-selecting", ".language", function(e){
+    var targetId = e.target.id
+    var targetNumber = targetId.match(/_(\d+)_/);
+    if(e.val == parseInt(e.val)){
+        $("#work_has_languages_" + targetNumber[1] + "language_id").val(e.object.id);
+        $("#work_has_languages_" + targetNumber[1] + "language_type_id").val(e.object.text);
+    }
+    else{
+        $("#work_has_languages_" + targetNumber[1] + "language_id").val("");
+        $("#work_has_languages_" + targetNumber[1] + "_language_type_id").val(e.object.id);
+    }
+  });
+</script>
+
+<div class="field" id="languages">
+  <%= f.label t('activerecord.models.language') -%><br />
+  <table id="bless">
+    <%- @work_has_languages.each_with_index do |work_has_language, index| %>
+      <%= f.fields_for :work_has_languages, work_has_language do |w_f| %>
+        <tr id="LANG<%= index %>">
+          <td>
+          <%= w_f.select :language_id, @languages.map{|language| [language.display_name.localize, language.id]} %>
+          <%#= text_field_tag "work_has_languages[][language_id]", work_has_language[:language_id], :id => "work_has_languages_#{index}_language_id", :class => "language" %></td>
+          <td>
+          <%= w_f.select :language_type_id, @language_types.map{|language_type| [language_type.display_name.localize, language_type.id]} %>
+          <%#= text_field_tag "work_has_languages[][language_type_id]", work_has_language[:language_type_id], :id => "work_has_languages_#{index}_language_type_id", :class => "language_type" %></td>
+          <%= w_f.hidden_field :nested, :value => 1 %>
+          <td><%= button_to_function t('page.add_line'), "ItemFieldLanguageSelect2.add()" -%></td>
+          <td><%= button_to_function t('page.del_line'), "ItemFieldLanguageSelect2.remove(#{index})" if index > 0 -%></td>
+        </tr>
+      <%- end -%>
+    <%- end -%>
+   </table>
+</div>

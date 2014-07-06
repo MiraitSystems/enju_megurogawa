@@ -1,0 +1,12 @@
+-----------------------------------------------------------------------
+  Attribute Normalizer News:
+
+  New with the 0.3.X release is the ability to change the default
+  normalization and also the ability to chain normalizers together.
+
+  After the flow of patches slows down on this release I will likely
+  freeze the feature set and API for a 1.0 release of the gem.
+
+  Cheers,
+  Michael Deering http://mdeering.com
+-----------------------------------------------------------------------

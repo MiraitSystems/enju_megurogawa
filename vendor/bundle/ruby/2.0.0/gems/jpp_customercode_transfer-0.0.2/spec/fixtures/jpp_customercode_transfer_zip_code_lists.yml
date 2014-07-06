@@ -1,0 +1,241 @@
+--- 
+zip_code_list_0001: 
+  union_code: 1101
+  zipcode: "0640804"
+  prefecture_name: "北海道"
+  city_name: "札幌市中央区"
+  region_name: "南四条西"
+  flag10: 0
+  flag11: 0
+  flag12: 1
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:22:14.469691 Z
+  updated_at: 2012-03-14 05:22:14.469691 Z
+zip_code_list_0002: 
+  union_code: 1207
+  zipcode5: 
+  zipcode: "0800831"
+  prefecture_name: "北海道"
+  city_name: "帯広市"
+  region_name: "稲田町南"
+  flag10: 0
+  flag11: 0
+  flag12: 0
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:22:34.174765 Z
+  updated_at: 2012-03-14 05:22:34.174765 Z
+zip_code_list_0003: 
+  union_code: 3202
+  zipcode5: 
+  zipcode: "0270203"
+  prefecture_name: "岩手県"
+  city_name: "宮古市"
+  region_name: "津軽石"
+  flag10: 0
+  flag11: 1
+  flag12: 0
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:24:29.845146 Z
+  updated_at: 2012-03-14 05:24:29.845146 Z
+zip_code_list_0004: 
+  union_code: 8202
+  zipcode5: 
+  zipcode: "3170055"
+  prefecture_name: "茨城県"
+  city_name: "日立市"
+  region_name: "宮田町"
+  flag10: 0
+  flag11: 0
+  flag12: 1
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:27:05.227432 Z
+  updated_at: 2012-03-14 05:27:05.227432 Z
+zip_code_list_0005: 
+  union_code: 12224
+  zipcode5: 
+  zipcode: "2730102"
+  prefecture_name: "千葉県"
+  city_name: "鎌ケ谷市"
+  region_name: "右京塚"
+  flag10: 0
+  flag11: 0
+  flag12: 0
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:29:15.930127 Z
+  updated_at: 2012-03-14 05:29:15.930127 Z
+zip_code_list_0006: 
+  union_code: 13205
+  zipcode5: 
+  zipcode: "1980036"
+  prefecture_name: "東京都"
+  city_name: "青梅市"
+  region_name: "河辺町"
+  flag10: 0
+  flag11: 0
+  flag12: 1
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:30:09.086591 Z
+  updated_at: 2012-03-14 05:30:09.086591 Z
+zip_code_list_0007: 
+  union_code: 18201
+  zipcode5: 
+  zipcode: "9100067"
+  prefecture_name: "福井県"
+  city_name: "福井市"
+  region_name: "新田塚"
+  flag10: 0
+  flag11: 0
+  flag12: 1
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:32:56.983781 Z
+  updated_at: 2012-03-14 05:32:56.983781 Z
+zip_code_list_0008: 
+  union_code: 26203
+  zipcode5: 
+  zipcode: "6230011"
+  prefecture_name: "京都府"
+  city_name: "綾部市"
+  region_name: "青野町"
+  flag10: 0
+  flag11: 0
+  flag12: 0
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:38:31.964983 Z
+  updated_at: 2012-03-14 05:38:31.964983 Z
+zip_code_list_0009: 
+  union_code: 27141
+  zipcode5: 
+  zipcode: "5900016"
+  prefecture_name: "大阪府"
+  city_name: "堺市堺区"
+  region_name: "中田出井町"
+  flag10: 0
+  flag11: 0
+  flag12: 1
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:38:58.962758 Z
+  updated_at: 2012-03-14 05:38:58.962758 Z
+zip_code_list_0010: 
+  union_code: 28110
+  zipcode5: 
+  zipcode: "6500046"
+  prefecture_name: "兵庫県"
+  city_name: "神戸市中央区"
+  region_name: "港島中町"
+  flag10: 0
+  flag11: 0
+  flag12: 1
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:39:39.307265 Z
+  updated_at: 2012-03-14 05:39:39.307265 Z
+zip_code_list_0011: 
+  union_code: 12103
+  zipcode5: 
+  zipcode: "2630023"
+  prefecture_name: "千葉県"
+  city_name: "千葉市稲毛区"
+  region_name: "緑町"
+  flag10: 0
+  flag11: 0
+  flag12: 1
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:28:52.534689 Z
+  updated_at: 2012-03-14 05:39:39.307265 Z
+zip_code_list_0012:
+  union_code: 5212
+  zipcode5: 
+  zipcode: "0140113"
+  prefecture_name: "秋田県"
+  city_name: "大仙市"
+  region_name: "堀見内"
+  flag10: 0
+  flag11: 1
+  flag12: 0
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:25:47.628140 Z
+  updated_at: 2012-03-14 05:25:47.628140 Z
+zip_code_list_0013:
+  union_code: 13106
+  zipcode5: 
+  zipcode: "1100016"
+  prefecture_name: "東京都"
+  city_name: "台東区"
+  region_name: "台東"
+  flag10: 0
+  flag11: 0
+  flag12: 1
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:29:56.852526 Z
+  updated_at: 2012-03-14 05:29:56.852526 Z
+zip_code_list_0014:
+  union_code: 1103
+  zipcode5: 
+  zipcode: "0600906"
+  prefecture_name: "北海道"
+  city_name: "札幌市東区"
+  region_name: "北六条東（１〜７丁目）"
+  flag10: 1
+  flag11: 0
+  flag12: 1
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:22:16.665289 Z
+  updated_at: 2012-03-14 05:22:16.665289 Z
+zip_code_list_0015:
+  union_code: 1103
+  zipcode5: 
+  zipcode: "0650006"
+  prefecture_name: "北海道"
+  city_name: "札幌市東区"
+  region_name: "北六条東（８〜２０丁目）"
+  flag10: 1
+  flag11: 0
+  flag12: 1
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:22:16.674888 Z
+  updated_at: 2012-03-14 05:22:16.674888 Z
+zip_code_list_0016:
+  union_code: 19207
+  zipcode5: 
+  zipcode: "4070033"
+  prefecture_name: "山梨県"
+  city_name: "韮崎市"
+  region_name: "龍岡町下條南割"
+  flag10: 0
+  flag11: 0
+  flag12: 0
+  flag13: 0
+  flag14: 0
+  update_flag: 0
+  created_at: 2012-03-14 05:33:22.734536 Z
+  updated_at: 2012-03-14 05:33:22.734536 Z
+

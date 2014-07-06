@@ -1,0 +1,28 @@
+<div id="content_detail" class="ui-corner-all">
+<h1 class="title"><%= t('page.edit_user_profile', :login_name => @user.username) -%></h1>
+<div id="content_list">
+<%= simple_form_for(@user) do |u_form| -%>
+<%= simple_form_for(@agent) do |p_form| -%>
+<%= render 'page/required_field' %>
+<%= render :partial => 'users/edit_credential', :locals => {:f => u_form, :user => @user} -%>
+<%= render :partial => 'users/form', :locals => {:f => p_form, :u_form => u_form, :agent => @agent}-%>
+<%- end -%>
+<%- end -%>
+</div>
+</div>
+
+<%= javascript_tag("$('#user_email').focus()") -%>
+
+<div id="submenu" class="ui-corner-all">
+  <ul>
+    <%- if current_user.has_role?('Librarian') -%>
+      <li><%= link_to t('page.listing', :model => t('activerecord.models.user')), users_path -%></li>
+    <%- end -%>
+    <li><%= link_to t('activerecord.attributes.user.show_user'), @user -%></li>
+    <%- if current_user.has_role?('Librarian') -%>
+      <%- if can? :destroy, @user -%>
+        <li><%= link_to t('page.destroy'), @user, :confirm => t('page.are_you_sure'), :method => :delete -%></li>
+      <%- end -%>
+    <%- end -%>
+  </ul>
+</div>

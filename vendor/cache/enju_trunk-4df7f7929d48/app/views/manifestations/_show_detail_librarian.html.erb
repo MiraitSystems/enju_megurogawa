@@ -1,0 +1,638 @@
+  <div id="tabs">
+    <%= render 'manifestations/tab_menu', :manifestation => manifestation %>
+    <div id="detail">
+      <%- if SystemConfiguration.get("manifestations.google_book_search_preview") && manifestation.isbn -%>
+        <%= google_book_search_preview(manifestation.isbn) -%>
+      <%- end -%>
+    <%# cache(:controller => :manifestations, :action => :show, :id => manifestation.id, :page => 'detail', :role => current_user_role_name, :locale => @locale, :manifestation_id => nil) do %>
+      <table id="resource_detail">
+        <% unless manifestation.identifier.blank? %>
+          <tr>
+            <td><%= t('activerecord.attributes.manifestation.identifier') %>:</td>
+            <td><%= manifestation.identifier %></td>
+          </tr>
+        <% end %>
+        <% manifestation.work_has_titles.each do |title| %>
+          <tr>
+            <td><%= t('activerecord.models.title') %> <%= title.title_type.display_name.localize if title.title_type %>:</td>
+            <td><%= title.manifestation_title.title  if title.manifestation_title%></td>
+          </tr>
+        <% end %>
+        <%= embed_content(manifestation) -%>
+        <%- if manifestation.try(:catalog_id) && manifestation.catalog_id > 0 -%>
+          <tr>
+            <td><%= t('activerecord.attributes.manifestation.external_catalog') %>:</td>
+            <td>
+              <%= manifestation.catalog.display_name %>
+              <%- if manifestation.nacsis_identifier %>(<%= t('activerecord.attributes.manifestation.nacsis_identifier') %>: <%= manifestation.nacsis_identifier %>)<%- end %>
+            </td>
+          </tr>
+        <%- end -%>
+        <% if manifestation.bookbinder %>
+          <tr>
+            <td><%= t('bookbinding.status') -%>:</td>
+            <td><%= t('bookbinding.binder') -%> (<%= link_to t('bookbinding.binding_items'), {:controller => 'manifestations', :action => 'index', :bookbinder_id => @binder.id} %>)</td>
+          </tr>
+        <% end %>
+        <%- if manifestation.series_statement -%>
+          <% unless manifestation.periodical_master %>
+            <tr>
+              <td style="width: 200px"><%= t('manifestation.series_statement') -%>:</td>
+              <td style="width: 490px">
+              <% if manifestation.series_statement.periodical %>
+                [<%= t('manifestation.serial') -%>]
+              <% end %>
+              <%= link_to manifestation.series_statement.original_title, manifestation.series_statement -%>
+              <% unless manifestation.article? %>
+                <%- if manifestation.series_statement.last_issues.include?(manifestation) %>
+                  <%= t('manifestation.new_serial') -%>
+                  <%- end -%>
+              <% end %>
+              <%- if manifestation.issn.present? -%>
+                (<%= t('activerecord.attributes.manifestation.issn') -%>: <%= manifestation.issn -%>)
+              <%- end -%>
+              </td>
+            </tr>
+          <% end %>
+
+          <%- if manifestation.periodical_master %>
+<!--
+            <%- if manifestation.exinfo_3 -%>
+              <tr>
+                <td><%= t('root_manifestation.exinfo_3') -%>:</td>
+                <td><%= manifestation.exinfo_3 -%></td>
+              </tr>
+            <%- end -%>
+            <%- if manifestation.exinfo_1 -%>
+              <tr>
+                <td><%= t('root_manifestation.exinfo_1') -%>:</td>
+                <td><%= manifestation.exinfo_1 -%></td>
+              </tr>
+            <%- end -%>
+            <%- if manifestation.exinfo_2 -%>
+              <tr>
+                <td><%= t('root_manifestation.exinfo_2') -%>:</td>
+                <td><%= manifestation.exinfo_2 -%></td>
+              </tr>
+            <%- end -%>
+            <%- if manifestation.exinfo_4 -%>
+              <tr>
+                <td><%= t('root_manifestation.exinfo_4') -%>:</td>
+                <td><%= manifestation.exinfo_4 -%></td>
+              </tr>
+            <%- end -%>
+            <%- if manifestation.exinfo_5 -%>
+              <tr>
+                <td><%= t('root_manifestation.exinfo_5') -%>:</td>
+                <td><%= manifestation.exinfo_5 -%></td>
+              </tr>
+            <%- end -%>
+            <%- if manifestation.exinfo_6 -%>
+              <tr>
+                <td><%= t('root_manifestation.exinfo_6') -%>:</td>
+                <td><%= manifestation.exinfo_6 -%></td>
+              </tr>
+            <%- end -%>
+            <%- if manifestation.exinfo_7 -%>
+              <tr>
+                <td><%= t('root_manifestation.exinfo_7') -%>:</td>
+                <td><%= manifestation.exinfo_7 -%></td>
+              </tr>
+            <%- end -%>
+            <%- if manifestation.exinfo_8 -%>
+              <tr>
+                <td><%= t('root_manifestation.exinfo_8') -%>:</td>
+                <td><%= manifestation.exinfo_8 -%></td>
+              </tr>
+            <%- end -%>
+-->
+          <%- end -%>
+        <% end %>
+        <% if manifestation.article? %>
+          <tr>
+            <td><%= t('activerecord.attributes.manifestation.article_title') %></td>
+            <td><%= manifestation.article_title %></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td><%= t('page.number') -%>:</td>
+          <td>
+            <%- if manifestation.edition_display_value? -%>
+              <%= t('activerecord.attributes.manifestation.edition_display_value') -%>: <%= manifestation.edition_display_value -%>
+            <%- end -%>
+            <%- unless manifestation.volume_number_string.blank? -%>
+              <%= t('activerecord.attributes.manifestation.volume_number_string') -%>: <%= manifestation.volume_number_string -%>
+            <%- end -%>
+            <%- unless manifestation.issue_number_string.blank? -%>
+              <%= t('manifestation.issue_number') -%>: <%= manifestation.issue_number_string -%>
+            <%- end -%>
+            <%- if manifestation.series_statement -%>
+              <%- unless manifestation.serial_number_string.blank? -%>
+                <%= t('manifestation.serial_number') -%>: <%= manifestation.serial_number_string -%>
+              <%- end -%>
+            <%- end -%>
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 200px"><%= t('page.form') -%>:</td>
+          <td style="width: 500px">
+            <%= form_icon(manifestation.carrier_type) -%> <%= manifestation.carrier_type.display_name.localize -%>
+          </td>
+        </tr>
+        <tr>
+          <td><%= t('activerecord.models.sub_carrier_type') %>:</td>
+          <td><span><%= manifestation.sub_carrier_type.display_name.localize if manifestation.sub_carrier_type %></span></td>
+        </tr>
+        <tr>
+          <td><%= t('activerecord.models.manifestation_type') %>:</td>
+          <td><span><%= manifestation.manifestation_type.display_name.localize if manifestation.manifestation_type %></span></td>
+        </tr>
+        <tr>
+          <td><%= t('activerecord.attributes.manifestation.jpn_or_foreign') %>:</td>
+          <td>
+            <% Manifestation::JPN_OR_FOREIGN.each do |jpn_or_foreign| %>
+              <%= jpn_or_foreign.name if jpn_or_foreign.id == manifestation.jpn_or_foreign %>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td><%= t('activerecord.models.language') -%>:</td>
+          <td><span itemprop="inLanguage"><%= display_work_has_languages(manifestation) %></span></td>
+        </tr>
+        <tr>
+          <td><%= t('activerecord.attributes.manifestation.country_of_publication') -%>:</td>
+          <td><%= manifestation.country_of_publication.display_name.localize if manifestation.country_of_publication_id -%></td>
+        </tr>
+        <tr>
+          <td><%= t('activerecord.attributes.manifestation.place_of_publication') -%>:</td>
+          <td><%= manifestation.place_of_publication -%></td>
+        </tr>
+        <% unless manifestation.periodical_master %>
+          <tr>
+            <td><%= t('manifestation.physical_description') -%>:</td>
+            <td>
+              <%- if manifestation.number_of_pages -%>
+                <span itemprop="numPages"><%= manifestation.number_of_pages -%></span> p.
+              <%- end -%>
+              <%= manifestation_page(manifestation) %>
+              <!-- TODO: センチメートル以外の単位 -->
+              <%- if manifestation.height -%>
+                <%= manifestation.height -%> cm.
+              <%- end -%>
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <td><%= t('activerecord.attributes.manifestation.price') -%></td>
+          <td><%= manifestation.price -%></td>
+        </tr>
+        <tr>
+          <td><%= t('activerecord.models.classification') -%>:</td>
+          <td><%= display_classifications(manifestation) -%></td>
+        </tr>
+        <tr>
+          <td><%= t('activerecord.models.subject') -%>:</td>
+          <td>
+            <%- unless manifestation.subjects.empty? -%>
+              <ul>
+                <%- manifestation.subjects.each do |subject| -%>
+                  <li>
+                    <%= link_to subject.term, subject -%>
+                    <%- unless subject.classifications.empty? -%>
+                      (
+                      <%- subject.classifications.each do |classification| -%>
+                        <%= classification.classification_type.name -%>: <%= link_to classification.category, classification -%>
+                      <%- end -%>
+                      )
+                    <%- end -%>
+                  </li>
+                <%- end -%>
+              </ul>
+            <%- end -%>
+          </td>
+        </tr>
+
+        <% if defined?(EnjuTrunkTheme) %>
+          <tr>
+            <td><%= t('activerecord.models.theme') %>:</td>
+            <td>
+              <% manifestation.themes.each do |theme| %>
+                <%= link_to theme.name, theme %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+
+        <% if defined?(EnjuBookmark) %>
+          <tr>
+            <td><%= t('activerecord.models.tag') -%>:</td>
+            <td>
+              <%= render 'manifestations/tag_list', :manifestation => manifestation -%>
+            </td>
+          </tr>
+        <% end %>
+        <%# unless manifestation.periodical_master %>
+          <%- unless manifestation.serial? -%>
+            <tr>
+              <td><%= t('activerecord.models.identifier') -%>:</td>
+              <td>
+                <%- if manifestation.isbn.present? -%>
+                  ISBN: <span itemprop="isbn"><%= manifestation.isbn -%></span>
+                  <%- if manifestation.isbn10.present? -%>
+                    ( <%= manifestation.isbn10 -%> )
+                  <%- end -%>
+                <%- end -%>
+                <%- if manifestation.nbn.present? -%>
+                  NBN: <%= manifestation.nbn -%>
+                <%- end -%>
+                <%- if manifestation.lccn.present? -%>
+                  <br />
+                  LCCN: <%= manifestation.lccn -%>
+                <%- end -%>
+                <%- if manifestation.marc_number.present? -%>
+                  <br />
+                  MARC: <%= manifestation.marc_number -%>
+                <%- end -%>
+                <%- if manifestation.ndc.present? -%>
+                  <br />
+                  NDC: <%= manifestation.ndc -%>
+                <%- end -%>
+                <% if manifestation.jan_magazine.present? %>
+                  <br />
+                  <%= t('activerecord.attributes.manifestation.jan_magazine')%>: <%= manifestation.jan_magazine %>
+                <% end %>
+                <%- if SystemConfiguration.get('manifestation.use_identifiers') %>
+                  <%- manifestation.identifiers.each do |identifier| -%>
+                    <%= identifier.identifier_type.display_name.localize %>: <%= identifier.body %><br />
+                  <%- end -%>
+                <%- end -%>
+              </td>
+            </tr>
+          <%- else -%>
+            <tr>
+              <td><%= t('page.identifier') -%>:</td>
+              <td>
+                <%- if manifestation.isbn.present? -%>
+                  ISBN: <span itemprop="isbn"><%= manifestation.isbn -%></span>
+                  <%- if manifestation.isbn10.present? -%>
+                    ( <%= manifestation.isbn10 -%> )
+                  <%- end -%>
+                <%- end -%>
+                <%- if manifestation.nbn.present? -%>
+                  NBN: <%= manifestation.nbn -%>
+                <%- end -%>
+                <%- if manifestation.lccn.present? -%>
+                  <br />
+                  LCCN: <%= manifestation.lccn -%>
+                <%- end -%>
+                <%- if manifestation.marc_number.present? -%>
+                  <br />
+                  MARC: <%= manifestation.marc_number -%>
+                <%- end -%>
+                <%- if manifestation.ndc.present? -%>
+                  <br />
+                  NDC: <%= manifestation.ndc -%>
+                <%- end -%>
+                <% if manifestation.jan_magazine.present? %>
+                  <br />
+                  <%= t('activerecord.attributes.manifestation.jan_magazine')%>: <%= manifestation.jan_magazine %>
+                <% end %>
+              </td>
+          <%- end -%>
+        <%# end %>
+        <%- unless manifestation.attachment_file_name.blank? -%>
+          <%= render 'manifestations/attachment_file', :manifestation => manifestation -%>
+        <%- end -%>
+        <% unless manifestation.periodical_master %>
+          <tr>
+            <td><%= t('manifestation.date_of_acquisition') -%>:</td>
+            <td><%=l manifestation.created_at if manifestation.created_at -%></td>
+          </tr>
+          <tr>
+            <td><%= t('activerecord.attributes.manifestation.acceptance_number') -%>:</td>
+            <td><%= manifestation.acceptance_number -%></td>
+          </tr>
+          <tr>
+            <td><%= t('page.updated_at') -%>:</td>
+            <td><%=l manifestation.updated_at if manifestation.updated_at -%></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td><%= t('activerecord.attributes.manifestation.description') -%>:</td>
+          <td>
+            <%= simple_format(hbr(manifestation.description)) -%>
+          </td>
+        </tr>
+        <%- if manifestation.table_of_contents.present? -%>
+          <%= render 'manifestations/show_table_of_contents', :manifestation => manifestation -%>
+        <%- end -%>
+        <tr>
+          <td><%= t('activerecord.attributes.manifestation.supplement') -%>:</td>
+          <td>
+            <%= simple_format(hbr(manifestation.supplement)) -%>
+          </td>
+        </tr>
+        <% unless manifestation.periodical_master %>
+          <tr>
+            <td><%= t('activerecord.attributes.manifestation.note') -%>:</td>
+            <td>
+              <%= simple_format(hbr(manifestation.note)) -%>
+            </td>
+          </tr>
+          <% manifestation.manifestation_extexts.each do |extext| %> 
+            <tr>
+              <td><%= t("manifestation_extext.#{extext.name}") %>:</td>
+              <td><%= extext.value  %></td>
+            </tr>
+          <% end %>
+          <% manifestation.manifestation_exinfos.each do |exinfo| %> 
+            <tr>
+              <td><%= t("manifestation_exinfo.#{exinfo.name}") %>:</td>
+              <td><%= exinfo.value  %></td>
+            </tr>
+          <% end %>
+<!--
+          <%- if manifestation.exinfo_2 -%>
+            <tr>
+              <td><%= t('activerecord.attributes.manifestation.exinfo_2') -%>:</td>
+              <td><%= manifestation.exinfo_2 -%></td>
+            </tr>
+          <%- end -%>
+          <%- if manifestation.exinfo_3 -%>
+            <tr>
+              <td><%= t('activerecord.attributes.manifestation.exinfo_3') -%>:</td>
+              <td><%= manifestation.exinfo_3 -%></td>
+            </tr>
+          <%- end -%>
+          <%- if manifestation.exinfo_4 -%>
+            <tr>
+              <td><%= t('activerecord.attributes.manifestation.exinfo_4') -%>:</td>
+              <td><%= manifestation.exinfo_4 -%></td>
+            </tr>
+          <%- end -%>
+          <%- if manifestation.exinfo_5 -%>
+            <tr>
+              <td><%= t('activerecord.attributes.manifestation.exinfo_5') -%>:</td>
+              <td><%= manifestation.exinfo_5 -%></td>
+            </tr>
+          <%- end -%>
+          <%- if manifestation.exinfo_6 -%>
+            <tr>
+              <td><%= t('activerecord.attributes.manifestation.exinfo_6') -%>:</td>
+              <td><%= manifestation.exinfo_6 -%></td>
+            </tr>
+          <%- end -%>
+          <%- if manifestation.exinfo_7 -%>
+            <tr>
+              <td><%= t('activerecord.attributes.manifestation.exinfo_7') -%>:</td>
+              <td><%= manifestation.exinfo_7 -%></td>
+            </tr>
+          <%- end -%>
+          <%- if manifestation.exinfo_8 -%>
+            <tr>
+              <td><%= t('activerecord.attributes.manifestation.exinfo_8') -%>:</td>
+              <td><%= manifestation.exinfo_8 -%></td>
+            </tr>
+          <%- end -%>
+          <%- if manifestation.exinfo_9 -%>
+            <tr>
+              <td><%= t('activerecord.attributes.manifestation.exinfo_9') -%>:</td>
+              <td><%= manifestation.exinfo_9 -%></td>
+            </tr>
+          <%- end -%>
+          <%- if manifestation.exinfo_10 -%>
+            <tr>
+              <td><%= t('activerecord.attributes.manifestation.exinfo_10') -%>:</td>
+              <td><%= manifestation.exinfo_10 -%></td>
+             </tr>
+          <%- end -%>
+-->
+        <%- end -%>
+        <%- if manifestation.extext_1 -%>
+          <tr>
+            <td><%= t('activerecord.attributes.manifestation.extext_1') -%>:</td>
+            <td><%= manifestation.extext_1 -%></td>
+          </tr>
+        <%- end -%>
+        <tr>
+          <td><%= t('activerecord.attributes.manifestation.use_license_id') %>:</td>
+          <td>
+            <% if manifestation.use_license  %>
+              <%= link_to manifestation.use_license.agency_name.blank? ? nil : manifestation.use_license.agency_name, manifestation.use_license %>
+            <% end %>
+          </td>
+        </tr>
+        <% unless manifestation.periodical_master %> 
+          <%- if SystemConfiguration.get("manifestation.display_checkouts_count") && Setting.operation -%>
+            <tr>
+              <td><%= t('activerecord.attributes.manifestation.checkouts_count') -%>:</td>
+              <td>
+                <%= manifestation.checkout_count(:all) -%> /
+                <%= manifestation.checkout_count(:current_term) -%> /
+                <%= manifestation.checkout_count(:previous_term) -%>
+              </td>
+            </tr>
+          <%- end -%>
+          <%- if SystemConfiguration.get("manifestation.display_reserves_count") && Setting.operation -%>
+            <tr>
+              <td><%= t('activerecord.attributes.manifestation.reserves_count') -%>:</td>
+              <td>
+                <%= manifestation.reserve_count(:all) -%> /
+                <%= manifestation.reserve_count(:current_term) -%> /
+                <%= manifestation.reserve_count(:previous_term) -%>
+              </td>
+            </tr>
+            <%- end -%>
+          <%- if SystemConfiguration.get("manifestation.display_last_checkout_datetime") -%>
+            <tr>
+              <td><%= t('activerecord.attributes.manifestation.last_checkout_datetime') -%>:</td>
+              <td>
+                <%=l manifestation.last_checkout_datetime if manifestation.last_checkout_datetime -%>
+              </td>
+            </tr>
+          <%- end -%>
+          <%- if manifestation.missing_issue %>
+            <tr>
+              <td><%= t('activerecord.attributes.manifestation.missing_issue') -%>:</td>
+              <td>
+                <%= missing_status(manifestation.missing_issue) -%>
+              </td>
+            </tr>
+          <%- end -%>
+        <% end %>
+
+        <%# 書誌と所蔵を１：１で管理する設定時、item の情報を表示する %>
+        <% if SystemConfiguration.get("manifestation.has_one_item") %>
+          <% items = manifestation.items = SystemConfiguration.get('manifestation.manage_item_rank') ? manifestation.items.sort_rank : manifestation.items %>
+          <% items.each do |item| %>
+            <% next if hide_item?(true, item) %>
+            <tr>
+              <td><%= t('activerecord.models.shelf') -%>:</td>
+              <td>
+                <%= link_to item.shelf.display_name.localize, item.shelf if item.shelf %> (<%= link_to item.shelf.library.display_name.localize, item.shelf.library if item.shelf.library %>) 
+              </td>
+            </tr>
+            <tr>
+              <td><%= t('activerecord.attributes.item.checkout_type') -%>:</td>
+              <td><%= link_to item.checkout_type.display_name.localize, item.checkout_type %></td>
+            </tr>
+            <tr>
+              <td><%= t('activerecord.models.accept_type') -%>:</td>
+              <td><%= link_to item.accept_type.display_name.localize, item.accept_type if item.accept_type %></td>
+            </tr>
+            <tr>
+              <td><%= t('activerecord.attributes.item.retention_period') -%>:</td>
+              <td>
+                <%= link_to item.retention_period.display_name.localize, item.retention_period if item.retention_period %>
+              </td>
+            </tr>
+            <%- if Setting.operation -%>
+              <tr>
+                <td><%= t('activerecord.models.lending_policy') -%>:</td>
+                <td>
+                  <%- item.lending_policies.each do |lending_policy| -%>
+                    <%= link_to lending_policy.user_group.display_name.localize, lending_policy -%>
+                  <%- end -%>
+                </td>
+              </tr>
+            <%- end -%>
+            <tr>
+              <td><%= t('activerecord.models.circulation_status') -%>:</td>
+              <td>
+                <% if item.circulation_status.name != 'Available On Shelf' %>
+                  <span class="not_rent_item">
+                    <%= item.circulation_status.display_name.localize if item.circulation_status %>
+                    <% if item.use_restriction.name == 'Not For Loan' %>
+                      (<%= t('activerecord.attributes.checkout.not_available') %>)
+                    <% end %>
+                  </span>
+                <% else %>
+                  <% if item.circulation_status %>
+                    <% if item.use_restriction.name != 'Not For Loan' %>
+                      <%= item.circulation_status.display_name.localize %>
+                    <% else %>
+                      <span class="not_rent_item"><%= t('activerecord.attributes.checkout.not_for_loan') %></span>
+                    <% end %>
+                  <% end %>
+                <% end %>
+                <% if item.rent? %>
+                  <% if user_signed_in? and current_user.has_role?('Librarian') %>
+                    (
+                    <%= t('activerecord.attributes.checkout.due_date') %>:
+                    <%= l(item.checkouts.first.due_date, :format => :only_date) %>
+                    <% if Time.zone.parse(item.checkouts.first.due_date.to_s) < Time.now %>
+                      <span class="not_rent_item"><%= t('activerecord.attributes.checkout.past_due') -%></span>
+                    <% end %>
+                    )
+                  <% end %>
+                <% end %>
+              </td>
+            </tr>
+            <%- if item.manifestation.series_statement && item.manifestation.series_statement.last_issues.include?(item.manifestation) -%>
+              <tr>
+                <td><%= t('item.new_serial') -%>:</td>
+                <td>
+            <%- end -%>
+            <%- if Setting.operation -%>
+              <%- unless item.checkouts.not_returned.blank? -%>
+                 (<%= link_to t('item.current_checkout'), user_checkout_path(item.checkouts.not_returned.first.user, item.checkouts.not_returned.first) -%>)
+              <%- end -%>
+            <%- end -%>
+              </td>
+            </tr>
+            <% if item.remove_reason %>
+              <tr>
+                <td><%= t('activerecord.models.remove_reason') %></td>
+                <td><%= link_to item.remove_reason.display_name.localize, item.remove_reason %></td>
+              </tr>
+              <tr>
+                <td><%= t('activerecord.attributes.item.removed_at') %></td>
+                <td><%=l (item.removed_at) if item.removed_at %></td>
+              </tr>
+            <% end %>
+            <tr>
+              <td><%= t('activerecord.attributes.item.call_number') %></td>
+              <td><%= call_numberformat(item) %></td>
+            </tr>
+            <tr>
+              <td><%= t('activerecord.attributes.item.item_identifier') -%>:</td>
+              <td>
+                <% if item.item_identifier? %>
+                  <%= link_to item.item_identifier, item %>
+                <% else %>
+                  (<%= link_to t('item.no_number'), item %>)
+                <% end %>
+              </td>
+            </tr>
+            <tr>
+              <td><%= t('activerecord.models.bookstore') -%>:</td>
+              <td><%= item.bookstore.try(:name) %></td>
+            </tr>
+            <tr>
+              <td><%= t('activerecord.attributes.item.price') -%>:</td>
+              <td><%= item.price %></td>
+            </tr>
+            <tr>
+              <td><%= t('activerecord.attributes.item.url') -%>:</td>
+              <td><%= link_to item.url, item.url %></td>
+            </tr>
+            <tr>
+              <td><%= t('activerecord.attributes.item.include_supplements') -%>:</td>
+              <td><%= localized_boolean(item.include_supplements) %></td>
+            </tr>
+            <tr>
+              <td><%= t('activerecord.models.use_restriction') -%>:</td>
+              <% if item.use_restriction %>
+              <td><%= item.use_restriction.display_name.localize %></td>
+              <% end %>
+            </tr>
+            <tr>
+              <td><%= t('activerecord.attributes.item.non_searchable') -%>:</td>
+              <td><%= localized_boolean(item.non_searchable) %></td>
+            </tr>
+            <tr>
+              <td><%= t('activerecord.attributes.item.acquired_at_string') -%>:</td>
+              <td><%=l item.acquired_at if item.acquired_at %></td>
+            </tr>
+            <tr>
+              <td><%= t('activerecord.attributes.item.note') -%>:</td>
+              <td><%= item.note %></td>
+            </tr>
+            <% if item.claim %> 
+              <tr>
+                <td><%= t('activerecord.attributes.claim.claim_type_id') -%>:</td>
+                <td><%= item.claim.claim_type.display_name if item.claim %></td>
+              </tr>
+              <tr>
+                <td><%= t('activerecord.attributes.claim.note') -%>:</td>
+                <td><%= item.claim.note if item.claim %></td>
+              </tr>
+            <% end %>
+
+            <%# TODO 登録フォームを資料と合わせた時に対応が必要（削除？） %>
+            <tr>
+              <td><%= t('page.created_at') -%> (<%= t('activerecord.models.item') -%>):</td>
+              <td><%=l (item.created_at) %></td>
+            </tr>
+            <tr>
+              <td><%= t('page.updated_at') -%> (<%= t('activerecord.models.item') -%>):</td>
+              <td><%=l (item.updated_at) %></td>
+            </tr>
+            <% if user_signed_in? and current_user.has_role?('Librarian') %>
+              <% if SystemConfiguration.get('manifestation.use_item_has_operator')%>
+                <%= render 'show_item_has_operator', item: item %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </table>
+    <%# end %>
+      <%# - if manifestation.items.on_shelf.exists? -%>
+      <% unless SystemConfiguration.get("manifestation.has_one_item") %> 
+        <%- if manifestation.items.exists? -%>
+          <%= render 'manifestations/show_holding', :manifestation => manifestation -%>
+        <%- end -%>
+      <% end %>
+    </div>
+    <%= render 'manifestations/tab_list', :manifestation => manifestation %>
+  </div>

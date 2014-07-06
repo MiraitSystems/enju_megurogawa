@@ -1,0 +1,83 @@
+<div id="content_detail" class="ui-corner-all">
+<h1 class="title"><%= t('page.showing', :model => t('activerecord.models.budget')) -%></h1>
+<div id="content_list">
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong><%= t('activerecord.attributes.budget.name') -%>:</strong>
+  <%= @budget.name -%>
+</p>
+
+<p>
+  <strong><%= t('activerecord.attributes.budget.user_id') -%>:</strong>
+  <%= @budget.user.username if @budget.user -%>
+</p>
+
+<p>
+  <strong><%= t('activerecord.attributes.budget.budget_class') -%>:</strong>
+  <%= t("activerecord.attributes.budget.budget_classes.#{@budget.budget_class}") if @budget.budget_class -%>
+</p>
+
+<p>
+  <strong><%= t('activerecord.attributes.budget.budget_type') -%>:</strong>
+  <%= @budget.budget_type.name if @budget.budget_type -%>
+</p>
+
+<p>
+  <strong><%= t('activerecord.attributes.budget.term') -%>:</strong>
+  <% if @budget.usual? || @budget.revised? %>
+    <%= @budget.term.display_name if @budget.term -%> (<%= l(@budget.term.start_at, :format => :only_date) if @budget.term -%> - <%= l(@budget.term.end_at, :format => :only_date) if @budget.term-%>)
+  <% else %>
+    <%= l(@budget.start_date, :format => :only_date) if @budget.start_date -%> - <%= l(@budget.end_date, :format => :only_date) if @budget.end_date-%>
+  <% end %>
+</p>
+
+<p>
+  <strong><%= t('activerecord.attributes.budget.note') -%>:</strong>
+  <%= @budget.note -%>
+</p>
+
+<p>
+  <strong><%= t('activerecord.attributes.budget.amount') -%>:</strong>
+  <%= t('budget.yen', :amount => to_format(@budget.amount)) -%>
+</p>
+
+<p>
+  <strong><%= t('activerecord.attributes.budget.transferred') -%>:</strong>
+  <%= t('budget.yen', :amount => to_format(@budget.transferred)) -%>
+</p>
+
+<p>
+  <strong><%= t('budget.sum') -%>:</strong>
+  <%= t('budget.yen', :amount => to_format(@sum)) -%>(<% if @sum_revised.present? %><%= t('budget.yen', :amount => to_format(@sum_revised)) -%><% end %>)
+</p>
+
+<p>
+  <strong><%= t('activerecord.attributes.budget.actual') -%>:</strong>
+  <%= t('budget.yen', :amount => to_format(@budget.actual)) -%>
+</p>
+
+<p>
+  <strong><%= t('activerecord.attributes.budget.implementation') -%>:</strong>
+  <%= t('budget.yen', :amount => to_format(@budget.implementation)) -%>
+</p>
+
+<p>
+  <strong><%= t('activerecord.attributes.budget.estimated_implementation') -%>:</strong>
+  <%= t('budget.yen', :amount => to_format(@budget.estimated_implementation)) -%>
+</p>
+
+<p>
+  <strong><%= t('activerecord.attributes.budget.remaining') -%>:</strong>
+  <%= t('budget.yen', :amount => to_format(@budget.remaining)) -%>
+</p>
+
+</div>
+</div>
+
+<div id="submenu" class="ui-corner-all">
+  <ul>
+    <li><%= link_to t('page.edit'), edit_budget_path(@budget) -%></li>
+    <li><%= link_to t('page.back'), budgets_path -%></li>
+  </ul>
+</div>

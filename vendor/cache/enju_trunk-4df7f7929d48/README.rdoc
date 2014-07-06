@@ -1,0 +1,30 @@
+= Next-L Enju Leaf公共図書館拡張版
+
+{<img src="https://codeclimate.com/github/MiraitSystems/enju_trunk.png" />}[https://codeclimate.com/github/MiraitSystems/enju_trunk]
+
+Next-L Enju Leaf は、{Project Next-L}[http://www.next-l.jp] で開発している図書館管理システムです。
+公共図書館拡張版は、株式会社三菱総合研究所と株式会社ミライト情報システムによって、公共図書館向けに機能強化したものです。
+
+Next-L Enju Leaf is an integrated library system developed by {Project Next-L}[http://www.next-l.jp]. Public Library Extension is developed by Mitsubishi Research Institute, Inc. and Open Technologies Corporation.
+
+== Project Next-L とは (What is Project Next-L?)
+{Project Next-L}[http://www.next-l.jp] とは、日本の図書館関係者有志の手で新しい図書館管理システムを作り上げる
+プロジェクトです。株式会社三菱総合研究所と株式会社ミライト情報システムは本プロジェクトを支援します。
+
+{Project Next-L}[http://www.next-l.jp] is a project to build a new integrated library system maintained 
+by Japanese volunteers interested in libraries. Mitsubishi Research Institute, Inc. 
+and Mirait Information Systems Corporation endorses this project.
+
+== 動作デモ (Demonstration)
+（準備中）
+
+== 関連するプロジェクト (Related projects)
+* {Next-L Enju Root}[http://wiki.github.com/nabeta/enju_root]
+* {Next-L Enju Leaf}[http://wiki.github.com/nabeta/enju_leaf]
+* {Next-L Enju Flower}[http://github.com/nabeta/enju_flower]
+
+== 製作者・貢献者 (Authors and contributors)
+* {TANABE, Kosuke}[http://mwr.mediacom.keio.ac.jp/~tanabe/]
+* {Project Next-L}[http://www.next-l.jp]
+* {Mitsubishi Research Institute, Inc.}[http://www.mri.co.jp]
+* {Mirait Information System Corporation}[http://www.miraitsystems.jp]

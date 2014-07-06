@@ -1,0 +1,98 @@
+<script>
+$(function(){
+  <% @item.item_has_operators.each_with_index do |operator, i| %>
+    $('#item_item_has_operators_attributes_<%= i %>_operated_at').setCalendar({src:'/assets/calendar.png'});
+  <% end %>
+});
+</script>
+
+<script>
+  var ItemField = {
+    currentNumber : <%= @item.item_has_operators.size %>,
+    itemTemplate : ''
+                 + '<label class="integer optional" for="item_item_has_operators_attributes___count___user_id"><%= t('activerecord.attributes.item_has_operator.user_id') %></label>'
+                 + '<input onclick="ItemField.add();" type="button" value="+" />'
+                 + '<input type="button" value="-" onClick="ItemField.remove(__count__);" /><br />'
+                 + '<input id="item_has_operators_attributes___count___username" name="item[item_has_operators_attributes][__count__][username]" type="text" />'
+                 + '</div>'
+                 + '<div class="field">'
+                 + '<label class="datetime optional" for="item_item_has_operators_attributes___count___operated_at"><%= t('activerecord.attributes.item_has_operator.operated_at') %></label><br />'
+                 + '<input id="item_item_has_operators_attributes___count___operated_at" name="item[item_has_operators_attributes][__count__][operated_at]" size="30" type="text" value="<%= Date.today %>" />'
+                 + '</div>'
+
+                 + '<div class="field">'
+                 + '<label class="integer optional" for="item_item_has_operators_attributes___count___library_id"><%= t('activerecord.attributes.item_has_operator.library_id') %></label><br />'
+                 + ' <select id="item_item_has_operators_attributes___count___library_id" name="item[item_has_operators_attributes][__count__][library_id]">'
+
+                 <% @libraries.map do |l| %>
+                 + '<option value="<%= l.id %>" <%= "selected = \"selected\"" if l.id == @item.library_id %>><%= l.display_name.localize %></option>'
+                 <% end %>
+                 + '</select>'
+                 + '</div>'
+
+                 + '<div class="field">'
+                 + '<label class="integer optional" for="item_item_has_operators_attributes___count___library_ad"><%= t('activerecord.attributes.item_has_operator.note') %></label><br />'
+
+                 + '<textarea cols="40" id="item_item_has_operators_attributes___count___note" name="item[item_has_operators_attributes][__count__][note]" rows="20"></textarea>',
+    itemDeleteTemplate : ''
+
+                 + '<input id="item_item_has_operators_attributes___count___user_id" name="item[item_has_operators_attributes][__count__][user_id]" type="hidden" value="" />'
+
+                 + '<input id="item_item_has_operators_attributes___count___operated_at" name="item[item_has_operators_attributes][__count__][operated_at]" size="30" type="text" value="" />'
+
+                 + '<textarea cols="40" id="item_item_has_operators_attributes___count___note" name="item[item_has_operators_attributes][__count__][note]" rows="20" value="" ></textarea>',
+
+    add : function () {
+      var replaceCount = this.currentNumber;
+      var new_area = document.createElement("div");
+      new_area.setAttribute("id", "SF" + replaceCount);
+      new_area.setAttribute("class", "field");
+      var newItem = this.itemTemplate.replace(/__count__/mg, replaceCount);
+      new_area.innerHTML = newItem;
+      $("div#operators").append(new_area);
+      $('#item_item_has_operators_attributes_' + replaceCount + '_operated_at').setCalendar({src:'/assets/calendar.png'});
+    
+   },
+    remove : function (no) {
+      var field = $('div#SF' + no);
+      field.append('<input name=item[item_has_operators_attributes][' + no + '][_destroy] style="display:none" value="1" />');
+      field.hide();
+    }
+  };
+</script>
+
+<div id="operators">
+<br />
+<%= f.label t('activerecord.models.item_has_operator') %><br />
+<%- @item.item_has_operators.each_with_index do  |item_operator, i| %>
+  <%= f.fields_for :item_has_operators, item_operator do |operator| %>
+    <div id="SF<%= i %>">
+    <div class="field">
+      <%= operator.label :user_id %>
+      <%= button_to_function '+', 'ItemField.add()' -%><%= button_to_function '-', "ItemField.remove(#{i})"  if( i > 0) -%><br />
+      <%#= select2_script "user_id" %>
+      <%# = make_select2(:user_id, "item_has_operator[user_id]", @checkout_types, @item.checkout_type_id, 200, false) %>
+      <%- if item_operator.username %>
+        <%= operator.text_field :username %>
+      <%- else -%>
+        <%= operator.text_field :username, :value => item_operator.try(:user).try(:username) %>
+      <%- end -%>
+    </div>
+    <div class="field">
+      <%= operator.label :operated_at %><br />
+      <%= operator.text_field :operated_at %>
+    </div>
+
+    <div class="field">
+      <%= operator.label :library_id %><br />
+      <%= operator.select :library_id, @libraries.map{|l| [l.display_name.localize, l.id]} %>
+    </div>
+
+    <div class="field">
+      <%= operator.label :note %><br />
+      <%= operator.text_area :note %>
+    </div>
+    </div>
+  <% end %>
+<% end %>
+</div>

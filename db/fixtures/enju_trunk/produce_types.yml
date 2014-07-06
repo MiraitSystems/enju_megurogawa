@@ -1,0 +1,34 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+publisher:
+  name: publisher
+  display_name: "en: Publisher\r\n\
+    ja: 出版者"
+  note: 
+  position: 1
+  id: 1
+  display: false
+
+seller:
+  name: seller
+  display_name: "en: Seller\r\n\
+    ja: 販売者"
+  note: 
+  position: 2
+  id: 2
+  display: true
+
+
+# == Schema Information
+#
+# Table name: create_types
+#
+#  id           :integer         not null, primary key
+#  name         :string(255)
+#  display_name :text
+#  note         :text
+#  position     :integer
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+

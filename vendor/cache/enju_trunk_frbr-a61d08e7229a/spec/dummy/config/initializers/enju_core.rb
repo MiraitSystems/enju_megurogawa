@@ -1,0 +1,1 @@
+require 'enju_core'

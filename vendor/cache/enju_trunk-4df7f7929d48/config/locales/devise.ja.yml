@@ -1,0 +1,47 @@
+ja:
+  errors:
+    messages:
+      not_found: "not found"
+      already_confirmed: "was already confirmed, please try signing in"
+      not_locked: "was not locked"
+      not_saved:
+        one: "%{resource} を保存するときに1つのエラーが発生しました:"
+        other: "%{resource} を保存するときに%{count}つのエラーが発生しました:"
+
+  devise:
+    failure:
+      already_authenticated: 'すでにログインしています。'
+      unauthenticated: '操作を続けるにはログインが必要です。'
+      unconfirmed: '操作を続けるにはアカウントの確認が必要です。'
+      locked: 'アカウントは停止されています。'
+      invalid: 'ユーザ名かパスワードが正しくありません。'
+      invalid_token: 'Invalid authentication token.'
+      timeout: 'Your session expired, please sign in again to continue.'
+      inactive: 'アカウントが有効になっていません。'
+    sessions:
+      signed_in: 'ログインしました。'
+      signed_out: 'ログアウトしました。'
+    passwords:
+      send_instructions: 'パスワードを再設定する手順についてのメールが数分のうちに届きます。'
+      updated: 'パスワードは正しく更新されました。ログインしました。'
+    confirmations:
+      send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
+      confirmed: 'Your account was successfully confirmed. You are now signed in.'
+    registrations:
+      signed_up: 'Welcome! You have signed up successfully.'
+      inactive_signed_up: 'You have signed up successfully. However, we could not sign you in because your account is %{reason}.'
+      updated: 'You updated your account successfully.'
+      destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'
+    unlocks:
+      send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
+      unlocked: 'Your account was successfully unlocked. You are now signed in.'
+    omniauth_callbacks:
+      success: 'Successfully authorized from %{kind} account.'
+      failure: 'Could not authorize you from %{kind} because "%{reason}".'
+    mailer:
+      confirmation_instructions:
+        subject: 'Confirmation instructions'
+      reset_password_instructions:
+        subject: 'Reset password instructions'
+      unlock_instructions:
+        subject: 'Unlock Instructions'

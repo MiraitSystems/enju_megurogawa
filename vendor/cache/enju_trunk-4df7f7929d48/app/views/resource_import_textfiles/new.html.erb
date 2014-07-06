@@ -1,0 +1,103 @@
+<script type="text/javascript">
+  jQuery(function($) {
+    $(document).on("change", "#resource_import_textfile_resource_import_text", function(){
+      //var name = $('select#resource_import_textfile_adapter_name :selected').val();
+      <% split_type = SystemConfiguration.get('set_output_format_type') ? 'tsv' : 'csv' %>
+      var split_type  = "<%= split_type %>";
+      if (this.value.match(/.xlsx$/) || 
+        (split_type == 'tsv' ? this.value.match(/.tsv$/) : this.value.match(/.csv$/))) {
+        var format_type = this.value.match(/.xlsx$/) ? 'excelx' : 'tsv_csv';
+        // show load message
+        var data = "<p style='color: green'><br />"
+                 + "<%= t('resource_import_textfile.importing_please_wait') %><br /><br /></p>";
+        $(".sheets").html(data);
+        $(".spinner").spin();
+        // show sheets
+        if (format_type = this.value.match(/.xlsx$/)) {
+          var csrf_token = $("meta[name=csrf-token]").attr("content");
+          $(this).upload('upload', { "authenticity_token": csrf_token }, function (data) {
+            $(".sheets").html(data)
+            $(".spinner").spin(false);
+            // re-enable select/fileinput/button after the upload is complete
+            $("#resource_import_textfile_resource_import_text").removeAttr("disabled");
+            $("#button_resource_input_create").removeAttr("disabled");
+            // set adapter_name
+            $("#resource_import_textfile_adapter_name").val('Excelfile_Adapter')
+          }, 'text');
+        } else {
+          jQuery.get('/resource_import_textfiles/adapters/Tsvfile_Adapter', function(data){
+            $(".sheets").html(data)
+            $(".spinner").spin(false);
+            $("#resource_import_textfile_resource_import_text").removeAttr("disabled");
+            $("#button_resource_input_create").removeAttr("disabled");
+            // set adapter_name
+            $("#resource_import_textfile_adapter_name").val('Tsvfile_Adapter')
+          });
+        }
+        // disable ESC keypress while uploading
+        $(document).keydown(function(e) { if (e.keyCode == 27) return false; });
+        // disable select/fileinput/button while uploading
+        $("#resource_import_textfile_resource_import_text").attr("disabled","disabled");
+        $("#button_resource_input_create").attr("disabled","disabled");
+     } else {
+        var path = this.value.split('\\');
+        var fileName = path.pop();
+        // show error message
+        var data = "<p style='color: red'>"
+                 + fileName + "<%= t('resource_import_textfile.wrong_file') %><br />"
+                 + "<%= t('resource_import_textfile.wrong_extention', :split_type => split_type) %></p>";
+        $("#resource_import_textfile_resource_import_text").val('');
+        $("#button_resource_input_create").attr("disabled","disabled");
+        $(".sheets").html(data)
+      }
+    });
+  });
+
+<% if SystemConfiguration.get('nacsis.can_use') %>
+  $(document).ready( function(){
+    $("#extraparams_external_resource_nacsis").attr("checked", true );
+  });
+<% end %>
+</script>
+
+<div id="content_detail" class="ui-corner-all">
+  <h1 class="title"><%= t('page.new', :model => t('activerecord.models.resource_import_textfile')) %></h1>
+  <div id="content_list">
+
+    <%= form_for(@resource_import_textfile, :html => { :multipart => true }, :remote => true ) do |f| %>
+
+      <% if SystemConfiguration.get('nacsis.can_use') %>
+        <%= label_tag 'external_resource_from', t('resource_import_textfile.external_resource_from') %><br />
+        <%= radio_button_tag 'extraparams[external_resource]', 'ndl', true %>
+        <%= label_tag 'extraparams[external_resource]_ndl', t('page.external_catalog.ndl') %>
+        <%= t('resource_import_textfile.priority_ndl') %>
+        <%= radio_button_tag 'extraparams[external_resource]', 'nacsis' %>
+        <%= label_tag 'extraparams[external_resource]_nacsis', t('page.external_catalog.nacsis') %>
+        <%= t('resource_import_textfile.priority_nacsis') %><br />
+        <br />
+      <% else %>
+        <%= hidden_field_tag 'extraparams[external_resource]', 'ndl' %>
+      <% end %>
+
+      <%= f.error_messages %>
+      <div class="field" id="select_file">
+        <%= f.label t('page.file') %><br />
+        <%= f.file_field :resource_import_text %>
+      </div>
+      <div class="spinner"></div>
+      <div class="sheets"></div>
+      <div class="actions">
+        <%= f.hidden_field :adapter_name, :value => '' %>
+        <%= f.submit :id => "button_resource_input_create", :disabled => true %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div id="submenu" class="ui-corner-all">
+  <ul>
+    <li>
+      <%= link_to t('page.listing', 
+        :model => t('activerecord.models.resource_import_textfile')), resource_import_textfiles_path %></li>
+  </ul>
+</div>

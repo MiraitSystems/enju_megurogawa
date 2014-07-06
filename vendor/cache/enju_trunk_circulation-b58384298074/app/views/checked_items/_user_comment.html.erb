@@ -1,0 +1,34 @@
+<%- if @basket.user.agent and  @basket.user.agent.note -%>
+  <div id="user_comment">
+    <strong><%= t('activerecord.attributes.checked_item.user_comment') -%>:</strong><br />
+    <%= @basket.user.agent.note -%>
+  </div>
+<%- end -%>
+<%- if @basket.user.agent -%>
+  <%- if can? :edit, @basket.user.agent-%>
+    <div><%= link_to_function t('activerecord.attributes.checked_item.edit_user_comment'), "$('#comment').toggle()" -%></div>
+    <div id="comment" style="display: none">
+      <%= form_for(@basket.user.agent) do |f| -%>
+        <div class="field">
+          <%= f.label :note -%>
+            <%- if @basket.user.agent.note_update_at -%>
+              &nbsp;<%= t('agent.last_update_at') -%>: <%= l(@basket.user.agent.note_update_at) -%>
+            <%- if @basket.user.agent.note_update_by -%>
+              &nbsp;<%= t('agent.last_update_by') -%>: <%= @basket.user.agent.note_update_by -%>
+            <%- end -%>
+            <%- if @basket.user.agent.note_update_library -%>
+              (<%= @basket.user.agent.note_update_library-%>)
+            <%- end -%>
+          <%- end -%>
+          <br />
+          <%= f.text_area :note, :class => 'resource_textarea', :rows => 4 -%>
+        </div>
+        <div class="actions">
+          <%= hidden_field_tag 'checked_item', 'true' -%>
+          <%= f.submit t('activerecord.attributes.checked_item.update_note')%>
+        </div>
+      <%- end -%>
+    </div>
+  <%- end -%>
+<%- end -%>
+<br />

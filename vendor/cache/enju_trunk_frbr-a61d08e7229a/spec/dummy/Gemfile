@@ -1,0 +1,3 @@
+source "http://rubygems.org"
+gem 'sqlite3'
+gem 'enju_trunk_frbr', :path => '../..'

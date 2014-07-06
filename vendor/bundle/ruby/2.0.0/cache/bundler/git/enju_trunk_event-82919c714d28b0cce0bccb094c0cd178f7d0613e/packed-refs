@@ -1,0 +1,7 @@
+# pack-refs with: peeled 
+4bc8e0d0d75e9ae4b78201af486f72446b83d153 refs/tags/version0.2
+^41d848424a1781dcd0f071721fa311f020fc9d4d
+e922a00a7beecc11618f629b1c490dfd1dbe8db4 refs/heads/master
+95b27cc99af57ce60320028b5d479642f7dae4e6 refs/heads/issue6799
+302f8ead81e98a6781f6ae748029bd277e1943ee refs/heads/adopt_events
+8b7765303b6929f043796513eefb04778a9ab70e refs/heads/0.0.x

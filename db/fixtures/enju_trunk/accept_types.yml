@@ -1,0 +1,19 @@
+---
+accept_type_00001:
+  id: 1
+  name: purchase
+  display_name: "購入"
+  note:
+  position: 1
+accept_type_00002:
+  id: 2
+  name: donation
+  display_name: "寄贈"
+  note:
+  position: 2
+accept_type_00003:
+  id: 3
+  name: production
+  display_name: "制作"
+  note:
+  position: 3

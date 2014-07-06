@@ -1,0 +1,10 @@
+# pack-refs with: peeled 
+fb622007db7e8e0d7feb441b309d7b23bdf8cca5 refs/tags/version0.0.1
+^2b88c801394be94e2b906a91b3689d734a1ae4d9
+09d72ca13149eb741569bfddb7f2443470a6d6a5 refs/heads/master
+8c23937820ff04fcfd2a9dc6b4675e2d31a04a7a refs/heads/issue5988
+d57af08cab586e8d2a31a4e479873e1399ff5e33 refs/heads/issue5987
+14420e5d63cf8cdaec6c48cd58d76c5dec02122c refs/heads/issue5986
+911d9d5a48393d3999c2834b21b6cfd2f40491db refs/heads/issue5985
+c5a3dfc273b527bffd5fef99efaffa19062f14cf refs/heads/issue5984
+5a4999f5afbef397c54db376b0414f62d770c149 refs/heads/issue5781
